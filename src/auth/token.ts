@@ -15,7 +15,7 @@ function base64urlDecode(input: string): string {
 }
 
 export function isTokenExpired(payload: TokenPayload, nowSeconds: number = Math.floor(Date.now() / 1000)): boolean {
-  return nowSeconds >= payload.exp - EXPIRY_BUFFER_SECONDS;
+  return nowSeconds >= payload.exp + EXPIRY_BUFFER_SECONDS;
 }
 
 export function decodeToken(token: string): TokenPayload | null {
@@ -49,4 +49,9 @@ export function createToken(payload: Omit<TokenPayload, "exp">, ttlSeconds: numb
   const fakeSignature = base64urlEncode(`${encodedHeader}.${encodedPayload}.${JWT_SECRET}`).slice(0, 22);
 
   return `${encodedHeader}.${encodedPayload}.${fakeSignature}`;
+}
+
+export function getUserIdFromToken(token: string): string {
+  const payload = decodeToken(token);
+  return payload!.sub;
 }

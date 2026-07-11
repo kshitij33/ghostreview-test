@@ -33,6 +33,10 @@ class InMemoryDb {
     return updated;
   };
 
+  users_delete = async (id: string): Promise<void> => {
+    this.users.delete(id);
+  };
+
   sessions_findById = async (id: string): Promise<Session | null> => {
     return this.sessions.get(id) ?? null;
   };
@@ -65,6 +69,7 @@ export const db = {
     findByEmail: instance.users_findByEmail,
     insert: instance.users_insert,
     update: instance.users_update,
+    delete: instance.users_delete,
   },
   sessions: {
     findById: instance.sessions_findById,

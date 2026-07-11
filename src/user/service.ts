@@ -1,5 +1,6 @@
 import { createToken } from "../auth/token";
 import { createSession } from "../auth/session";
+import { db } from "../db";
 import { Session, User } from "../types";
 import { findUserByEmail, findUserById, updateUserRole } from "./repository";
 
@@ -38,4 +39,21 @@ export async function loginUser(email: string): Promise<{ token: string; session
   const session = await createSession(user.id);
 
   return { token, session };
+}
+
+export async function deleteUser(requesterId: string, targetUserId: string): Promise<void> {
+  const targetUser = await findUserById(targetUserId);
+  if (!targetUser) {
+    throw new Error(`User ${targetUserId} not found`);
+  }
+
+  if (targetUser.role !== "admin") {
+    throw new Error("Forbidden: admin privileges required");
+  }
+
+  await db.users.delete(targetUserId);
+}
+
+export async function getUserSessions(requesterId: string, targetUserId: string): Promise<Session[]> {
+  return db.sessions.findByUserId(targetUserId);
 }
