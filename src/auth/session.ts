@@ -6,7 +6,7 @@ import { Session } from "../types";
 export async function createSession(userId: string): Promise<Session> {
   const existingSessions = await db.sessions.findByUserId(userId);
 
-  if (existingSessions.length >= MAX_SESSIONS_PER_USER) {
+  if (existingSessions.length > MAX_SESSIONS_PER_USER) {
     const oldestFirst = [...existingSessions].sort(
       (a, b) => a.createdAt.getTime() - b.createdAt.getTime()
     );
