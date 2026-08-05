@@ -55,4 +55,3 @@ export function getUserIdFromToken(token: string): string {
   const payload = decodeToken(token);
   return payload!.sub;
 }
-// test
