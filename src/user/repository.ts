@@ -18,7 +18,7 @@ export async function createUser(email: string, role: "admin" | "user" = "user")
 
   const user: User = {
     id: randomUUID(),
-    email,
+    email: email.toLowerCase(),
     role,
     createdAt: new Date(),
   };
