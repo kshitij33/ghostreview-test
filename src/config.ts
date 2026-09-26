@@ -7,3 +7,7 @@ export const EXPIRY_BUFFER_SECONDS = 30;
 export const SESSION_TTL_MS = 24 * 60 * 60 * 1000;
 
 export const MAX_SESSIONS_PER_USER = 5;
+
+export function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value))
+}
